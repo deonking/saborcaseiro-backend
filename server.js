@@ -11,7 +11,27 @@ app.post('/api/pix', async (req, res) => {
     try {
         console.log('Recebendo requisição /api/pix:', req.body);
         const { amount, payer, description, reference } = req.body;
-        const payload = { amount, payer, description, reference };
+        // Monta o payload conforme a documentação da ByNet e os dados do formulário/localStorage
+        // Se vier um campo 'items' no body, use ele, senão monta um item padrão
+        let items = req.body.items;
+        if (!Array.isArray(items) || items.length === 0) {
+            items = [
+                {
+                    title: description || 'Pedido Sabor Caseiro',
+                    unitPrice: amount,
+                    quantity: 1,
+                    tangible: true
+                }
+            ];
+        }
+        const payload = {
+            amount,
+            payer,
+            description,
+            reference,
+            paymentMethod: 'pix',
+            items
+        };
         console.log('Enviando para ByNet:', payload);
         const response = await axios.post(
             'https://api.bynetglobal.com.br/v1/transactions',

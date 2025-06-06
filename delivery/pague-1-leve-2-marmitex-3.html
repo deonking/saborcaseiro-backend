@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="pt-br" class="notranslate">
+   <head>
+      <meta charset="UTF-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="google" content="notranslate">
+      <link rel="shortcut icon" type="image/jpg" href="https://deliverysaborcaseiro.com/assets/favicon.jpg">
+      <title>Sabor Caseiro - Faça seu pedido!</title>
+      <meta name="description" content="Faça seu pedido online no Sabor Caseiro">
+      <!-- Google tag (gtag.js) -->
+      <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17156857002"></script>
+      <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'AW-17156857002');
+      </script>
+      <!-- Tailwind CSS -->
+      <script src="https://cdn.tailwindcss.com"></script>
+      <script>
+         tailwind.config = {
+             theme: {
+                 extend: {
+                     colors: {
+                         primary: '#ff0000',
+                     }
+                 }
+             }
+         }
+      </script>
+      <!-- Font Awesome -->
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+      <!-- SweetAlert2 -->
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+      <!-- Google Icons -->
+      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+      <!-- Theme Meta Tags -->
+      <meta name="theme-color" content="#ff0000">
+      <meta name="apple-mobile-web-app-capable" content="yes">
+      <meta name="apple-mobile-web-app-status-bar-style" content="#ff0000">
+      <meta name="apple-mobile-web-app-title" content="Temperinho da Vó">
+	  <style>
+         .container {
+         width: 100%;
+         max-width: 850px !important;
+         padding-right: 16px;
+         padding-left: 16px;
+         margin-right: auto;
+         margin-left: auto;
+         }
+         body {
+         padding-bottom: 64px;
+         background-color: #f8f9fa;
+         }
+
+		   /* Animações para os contadores */
+  .qtdeOpcao {
+    transition: all 0.3s ease;
+  }
+  
+  /* Melhorar visual dos botões */
+  .adicionarQtdeOpcao:hover i,
+  .removerQtdeOpcao:hover i {
+    color: #ff0000 !important;
+  }
+  
+  /* Estilo quando item está selecionado */
+  .opcoes.selected {
+    background-color: #fff5f5;
+    border-left: 4px solid #ff0000;
+  }
+  
+  /* Melhorar visual do contador principal */
+  .col2 {
+    background: linear-gradient(45deg, #1a1a1a, #333);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  
+  /* Estilo para itens grátis */
+  .text-green-600 {
+    animation: pulse 2s infinite;
+  }
+  
+  @keyframes pulse {
+    0% { opacity: 0.8; }
+    50% { opacity: 1; }
+    100% { opacity: 0.8; }
+  }
+  
+  /* Melhorar visual do botão finalizar */
+  .fixed.bottom-0 {
+    backdrop-filter: blur(10px);
+  }
+  
+  /* Estilo para seções */
+  .tipo {
+    border: 1px solid #eee;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+      </style>
+   </head>
+   <body class="bg-gray-100">
+	<div>
+	<div class="container containerFinalizar mx-auto px-4 py-8">
+		<button onclick="window.history.back()" 
+		class="voltar fixed top-4 left-4 z-50 inline-flex items-center gap-2 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors hover:shadow-lg">
+	   <i class="fa-solid fa-chevron-left"></i>
+	   VOLTAR
+	 </button>
+	 
+	<div id="detalhesProduto" class="bg-white rounded-xl shadow-lg overflow-hidden">
+	<div class="info1 p-6">
+		<div class="somarAoPreco" style="display:none">s</div>
+	   <div class="grid md:grid-cols-2 lg:grid-cols-[320px_1fr] gap-6 items-start">
+		  <div class="fotoProduto mx-auto md:mx-0">
+			 <img src="https://deliverysaborcaseiro.com/assets/images/produtos/familia.webp"  
+				class="w-full h-auto rounded-lg object-cover"
+				style="max-width: 320px; aspect-ratio: 4/3;"
+				alt="Marmitex">
+		  </div>
+		  <div class="descricao space-y-2">
+			 <h3 class="text-2xl font-bold text-gray-800">Kit Familia 3 Grande Com Churrasco</h3>
+			 <p class="detalhe font-semibold text-gray-600">9 Complementos Grátis</p>
+			 <div class="space-y-1">
+				<p class="text-sm text-gray-500">de <span class="precoPromocao line-through">R$ 53,80</span> por</p>
+				<p class="preco text-3xl font-bold text-green-700">R$ 39,90</p>
+			 </div>
+			 <p class="estoque flex items-center gap-1 text-sm text-gray-600">
+				<i class="fa-solid fa-circle-down text-primary"></i>
+				<span>apenas 32 combos disponíveis</span>
+			 </p>
+		  </div>
+	   </div>
+	</div>
+	   <div class="border-t border-gray-200">
+		  <div class="bg-gray-50 p-6">
+					<div class="info2 scrollable-section" id="opcoesProduto">
+				   <div id="secao-acompanhamentos" class="tipo p-4 bg-gray-50 rounded-xl" data-id="15313" data-calculo="n" data-minimo="0" data-maximo="6" data-opcional="n">
+					  <div class="topo flex justify-between items-center">
+						 <div>
+							<h3 class="text-lg font-bold text-gray-800">Acompanhamentos:</h3>
+							<p class="detalhe text-sm text-gray-600">Escolha até 6 opções</p>
+						 </div>
+						 <div class="col2 flex items-center gap-1 bg-gradient-to-r from-gray-900 to-gray-800 text-white px-3 py-1.5 rounded-full text-sm shadow-lg">
+							<span class="escolhidos font-medium"><span class="contador-acompanhamentos">0</span>/6</span>
+							<i class="fa-solid fa-circle-check text-green-500 animate-pulse"></i>
+						  </div>
+					  </div>
+					  <div class="bg-white rounded-lg mt-4 border border-gray-100">
+						 <div class="opcoes" data-id="118806" data-categoria="acompanhamentos">
+							<div class="desc flex justify-between items-center p-3 border-b border-gray-100 hover:bg-gray-50 transition-colors">
+							   <span class="nome font-semibold text-gray-800">Arroz</span>
+							   <div class="qtdeProdutoOpcao inline-flex items-center rounded-full border border-gray-200 hover:border-primary">
+								  <button class="removerQtdeOpcao w-8 h-8 flex items-center justify-center" aria-label="Remover">
+								  <i class="fa-solid fa-minus text-gray-400"></i>
+								  </button>
+								  <input type="text" value="0" min="0" size="3" class="qtdeOpcao w-8 text-center bg-transparent" readonly>
+								  <button class="adicionarQtdeOpcao w-8 h-8 flex items-center justify-center" aria-label="Adicionar">
+								  <i class="fa-solid fa-plus text-gray-400"></i>
+								  </button>
+							   </div>
+							</div>
+						 </div>
+						 <div class="opcoes" data-id="118812" data-categoria="acompanhamentos">
+							<div class="desc flex justify-between items-center p-3 border-b border-gray-100 hover:bg-gray-50 transition-colors">
+							   <span class="nome font-semibold text-gray-800">Arroz Integral</span>
+							   <div class="qtdeProdutoOpcao inline-flex items-center rounded-full border border-gray-200 hover:border-primary">
+								  <button class="removerQtdeOpcao w-8 h-8 flex items-center justify-center">
+								  <i class="fa-solid fa-minus text-gray-400"></i>
+								  </button>
+								  <input type="text" value="0" min="0" size="3" class="qtdeOpcao w-8 text-center bg-transparent" readonly>
+								  <button class="adicionarQtdeOpcao w-8 h-8 flex items-center justify-center">
+								  <i class="fa-solid fa-plus text-gray-400"></i>
+								  </button>
+							   </div>
+							</div>
+						 </div>
+						 <div class="opcoes" data-id="118807" data-categoria="acompanhamentos">
+							<div class="desc flex justify-between items-center p-3 border-b border-gray-100 hover:bg-gray-50 transition-colors">
+							   <span class="nome font-semibold text-gray-800">Feijão em Caldo</span>
+							   <div class="qtdeProdutoOpcao inline-flex items-center rounded-full border border-gray-200 hover:border-primary">
+								  <button class="removerQtdeOpcao w-8 h-8 flex items-center justify-center">
+								  <i class="fa-solid fa-minus text-gray-400"></i>
+								  </button>
+								  <input type="text" value="0" min="0" size="3" class="qtdeOpcao w-8 text-center bg-transparent" readonly>
+								  <button class="adicionarQtdeOpcao w-8 h-8 flex items-center justify-center">
+								  <i class="fa-solid fa-plus text-gray-400"></i>
+								  </button>
+							   </div>
+							</div>
+						 </div>
+						 <div class="opcoes" data-id="118813" data-categoria="acompanhamentos">
+							<div class="desc flex justify-between items-center p-3 border-b border-gray-100 hover:bg-gray-50 transition-colors">
+							   <span class="nome font-semibold text-gray-800">Feijão Tropeiro</span>
+							   <div class="qtdeProdutoOpcao inline-flex items-center rounded-full border border-gray-200 hover:border-primary">
+								  <button class="removerQtdeOpcao w-8 h-8 flex items-center justify-center">
+								  <i class="fa-solid fa-minus text-gray-400"></i>
+								  </button>
+								  <input type="text" value="0" min="0" size="3" class="qtdeOpcao w-8 text-center bg-transparent" readonly>
+								  <button class="adicionarQtdeOpcao w-8 h-8 flex items-center justify-center">
+								  <i class="fa-solid fa-plus text-gray-400"></i>
+								  </button>
+							   </div>
+							</div>
+						 </div>
+						 <div class="opcoes" data-id="118815" data-categoria="acompanhamentos">
+							<div class="desc flex justify-between items-center p-3 border-b border-gray-100 hover:bg-gray-50 transition-colors">
+							   <span class="nome font-semibold text-gray-800">Tutu de Feijão</span>
+							   <div class="qtdeProdutoOpcao inline-flex items-center rounded-full border border-gray-200 hover:border-primary">
+								  <button class="removerQtdeOpcao w-8 h-8 flex items-center justify-center">
+								  <i class="fa-solid fa-minus text-gray-400"></i>
+								  </button>
+								  <input type="text" value="0" min="0" size="3" class="qtdeOpcao w-8 text-center bg-transparent" readonly>
+								  <button class="adicionarQtdeOpcao w-8 h-8 flex items-center justify-center">
+								  <i class="fa-solid fa-plus text-gray-400"></i>
+								  </button>
+							   </div>
+							</div>
+						 </div>
+						 <div class="opcoes" data-id="118814" data-categoria="acompanhamentos">
+							<div class="desc flex justify-between items-center p-3 border-b border-gray-100 hover:bg-gray-50 transition-colors">
+							   <span class="nome font-semibold text-gray-800">Pure de Batata</span>
+							   <div class="qtdeProdutoOpcao inline-flex items-center rounded-full border border-gray-200 hover:border-primary">
+								  <button class="removerQtdeOpcao w-8 h-8 flex items-center justify-center">
+								  <i class="fa-solid fa-minus text-gray-400"></i>
+								  </button>
+								  <input type="text" value="0" min="0" size="3" class="qtdeOpcao w-8 text-center bg-transparent" readonly>
+								  <button class="adicionarQtdeOpcao w-8 h-8 flex items-center justify-center">
+								  <i class="fa-solid fa-plus text-gray-400"></i>
+								  </button>
+							   </div>
+							</div>
+						 </div>
+						 <div class="opcoes" data-id="118810" data-categoria="acompanhamentos">
+							<div class="desc flex justify-between items-center p-3 border-b border-gray-100 hover:bg-gray-50 transition-colors">
+							   <span class="nome font-semibold text-gray-800">Farofa ovos e bacon</span>
+							   <div class="qtdeProdutoOpcao inline-flex items-center rounded-full border border-gray-200 hover:border-primary">
+								  <button class="removerQtdeOpcao w-8 h-8 flex items-center justify-center">
+								  <i class="fa-solid fa-minus text-gray-400"></i>
+								  </button>
+								  <input type="text" value="0" min="0" size="3" class="qtdeOpcao w-8 text-center bg-transparent" readonly>
+								  <button class="adicionarQtdeOpcao w-8 h-8 flex items-center justify-center">
+								  <i class="fa-solid fa-plus text-gray-400"></i>
+								  </button>
+							   </div>
+							</div>
+						 </div>
+						 <div class="opcoes" data-id="118818" data-categoria="acompanhamentos">
+							<div class="desc flex justify-between items-center p-3 hover:bg-gray-50 transition-colors">
+							   <span class="nome font-semibold text-gray-800">Macarrão Alho e Óleo</span>
+							   <div class="qtdeProdutoOpcao inline-flex items-center rounded-full border border-gray-200 hover:border-primary">
+								  <button class="removerQtdeOpcao w-8 h-8 flex items-center justify-center">
+								  <i class="fa-solid fa-minus text-gray-400"></i>
+								  </button>
+								  <input type="text" value="0" min="0" size="3" class="qtdeOpcao w-8 text-center bg-transparent" readonly>
+								  <button class="adicionarQtdeOpcao w-8 h-8 flex items-center justify-center">
+								  <i class="fa-solid fa-plus text-gray-400"></i>
+								  </button>
+							   </div>
+							</div>
+						 </div>
+					  </div>
+				   </div>
+				   
+				   <!-- Seção de Carnes -->
+				   <div id="secao-carnes" class="tipo mt-8 p-4 bg-gray-50 rounded-xl" data-id="15314" data-calculo="n" data-minimo="0" data-maximo="3" data-opcional="n">
+					  <div class="topo flex justify-between items-center">
+						 <div>
+							<h3 class="text-lg font-bold text-gray-800">Carne:</h3>
+							<p class="detalhe text-sm text-gray-600">Escolha até 3 opções - aprox 150g</p>
+						 </div>
+						 <div class="col2 flex items-center gap-1 bg-gradient-to-r from-gray-900 to-gray-800 text-white px-3 py-1.5 rounded-full text-sm shadow-lg">
+							<span class="escolhidos font-medium"><span class="contador-carnes">0</span>/3</span>
+							<i class="fa-solid fa-circle-check text-green-500 animate-pulse"></i>
+						 </div>
+					  </div>
+					  <div class="bg-white rounded-lg mt-4 border border-gray-100">
+						 <div class="opcoes" data-id="119001" data-categoria="carnes">
+							<div class="desc flex justify-between items-center p-3 border-b border-gray-100 hover:bg-gray-50 transition-colors">
+							   <span class="nome font-semibold text-gray-800">Cupim</span>
+							   <div class="qtdeProdutoOpcao inline-flex items-center rounded-full border border-gray-200 hover:border-primary">
+								  <button class="removerQtdeOpcao w-8 h-8 flex items-center justify-center">
+								  <i class="fa-solid fa-minus text-gray-400"></i>
+								  </button>
+								  <input type="text" value="0" min="0" size="3" class="qtdeOpcao w-8 text-center bg-transparent" readonly>
+								  <button class="adicionarQtdeOpcao w-8 h-8 flex items-center justify-center">
+								  <i class="fa-solid fa-plus text-gray-400"></i>
+								  </button>
+							   </div>
+							</div>
+						 </div>
+						 <div class="opcoes" data-id="119002" data-categoria="carnes">
+							<div class="desc flex justify-between items-center p-3 border-b border-gray-100 hover:bg-gray-50 transition-colors">
+							   <span class="nome font-semibold text-gray-800">Fraldinha</span>
+							   <div class="qtdeProdutoOpcao inline-flex items-center rounded-full border border-gray-200 hover:border-primary">
+								  <button class="removerQtdeOpcao w-8 h-8 flex items-center justify-center">
+								  <i class="fa-solid fa-minus text-gray-400"></i>
+								  </button>
+								  <input type="text" value="0" min="0" size="3" class="qtdeOpcao w-8 text-center bg-transparent" readonly>
+								  <button class="adicionarQtdeOpcao w-8 h-8 flex items-center justify-center">
+								  <i class="fa-solid fa-plus text-gray-400"></i>
+								  </button>
+							   </div>
+							</div>
+						 </div>
+						 <div class="opcoes" data-id="119003" data-categoria="carnes">
+							<div class="desc flex justify-between items-center p-3 border-b border-gray-100 hover:bg-gray-50 transition-colors">
+							   <span class="nome font-semibold text-gray-800">File ao Alho</span>
+							   <div class="qtdeProdutoOpcao inline-flex items-center rounded-full border border-gray-200 hover:border-primary">
+								  <button class="removerQtdeOpcao w-8 h-8 flex items-center justify-center">
+								  <i class="fa-solid fa-minus text-gray-400"></i>
+								  </button>
+								  <input type="text" value="0" min="0" size="3" class="qtdeOpcao w-8 text-center bg-transparent" readonly>
+								  <button class="adicionarQtdeOpcao w-8 h-8 flex items-center justify-center">
+								  <i class="fa-solid fa-plus text-gray-400"></i>
+								  </button>
+							   </div>
+							</div>
+						 </div>
+						 <div class="opcoes" data-id="119004" data-categoria="carnes">
+							<div class="desc flex justify-between items-center p-3 border-b border-gray-100 hover:bg-gray-50 transition-colors">
+							   <span class="nome font-semibold text-gray-800">Contra File</span>
+							   <div class="qtdeProdutoOpcao inline-flex items-center rounded-full border border-gray-200 hover:border-primary">
+								  <button class="removerQtdeOpcao w-8 h-8 flex items-center justify-center">
+								  <i class="fa-solid fa-minus text-gray-400"></i>
+								  </button>
+								  <input type="text" value="0" min="0" size="3" class="qtdeOpcao w-8 text-center bg-transparent" readonly>
+								  <button class="adicionarQtdeOpcao w-8 h-8 flex items-center justify-center">
+								  <i class="fa-solid fa-plus text-gray-400"></i>
+								  </button>
+							   </div>
+							</div>
+						 </div>
+						 <div class="opcoes" data-id="119005" data-categoria="carnes">
+							<div class="desc flex justify-between items-center p-3 border-b border-gray-100 hover:bg-gray-50 transition-colors">
+							   <span class="nome font-semibold text-gray-800">Calabresa 2 Unidades</span>
+							   <div class="qtdeProdutoOpcao inline-flex items-center rounded-full border border-gray-200 hover:border-primary">
+								  <button class="removerQtdeOpcao w-8 h-8 flex items-center justify-center">
+								  <i class="fa-solid fa-minus text-gray-400"></i>
+								  </button>
+								  <input type="text" value="0" min="0" size="3" class="qtdeOpcao w-8 text-center bg-transparent" readonly>
+								  <button class="adicionarQtdeOpcao w-8 h-8 flex items-center justify-center">
+								  <i class="fa-solid fa-plus text-gray-400"></i>
+								  </button>
+							   </div>
+							</div>
+						 </div>
+						 <div class="opcoes" data-id="119006" data-categoria="carnes">
+							<div class="desc flex justify-between items-center p-3 hover:bg-gray-50 transition-colors">
+							   <span class="nome font-semibold text-gray-800">Medalhão de frango 5 Unidades</span>
+							   <div class="qtdeProdutoOpcao inline-flex items-center rounded-full border border-gray-200 hover:border-primary">
+								  <button class="removerQtdeOpcao w-8 h-8 flex items-center justify-center">
+								  <i class="fa-solid fa-minus text-gray-400"></i>
+								  </button>
+								  <input type="text" value="0" min="0" size="3" class="qtdeOpcao w-8 text-center bg-transparent" readonly>
+								  <button class="adicionarQtdeOpcao w-8 h-8 flex items-center justify-center">
+								  <i class="fa-solid fa-plus text-gray-400"></i>
+								  </button>
+							   </div>
+							</div>
+						 </div>
+					  </div>
+				   </div>
+				   
+				   <!-- Seção de Saladas -->
+				   <div id="secao-saladas" class="tipo mt-8 p-4 bg-gray-50 rounded-xl" data-id="15315" data-calculo="n" data-minimo="0" data-maximo="4" data-opcional="n">
+					  <div class="topo flex justify-between items-center">
+						 <div>
+							<h3 class="text-lg font-bold text-gray-800">Salada:</h3>
+							<p class="detalhe text-sm text-gray-600">Escolha até 4 opções</p>
+						 </div>
+						 <div class="col2 flex items-center gap-1 bg-gradient-to-r from-gray-900 to-gray-800 text-white px-3 py-1.5 rounded-full text-sm shadow-lg">
+							<span class="escolhidos font-medium"><span class="contador-saladas">0</span>/4</span>
+							<i class="fa-solid fa-circle-check text-green-500 animate-pulse"></i>
+						 </div>
+					  </div>
+					  <div class="bg-white rounded-lg mt-4 border border-gray-100">
+						 <div class="opcoes" data-id="120001" data-categoria="saladas">
+							<div class="desc flex justify-between items-center p-3 border-b border-gray-100 hover:bg-gray-50 transition-colors">
+							   <span class="nome font-semibold text-gray-800">Vinagrete</span>
+							   <div class="qtdeProdutoOpcao inline-flex items-center rounded-full border border-gray-200 hover:border-primary">
+								  <button class="removerQtdeOpcao w-8 h-8 flex items-center justify-center">
+								  <i class="fa-solid fa-minus text-gray-400"></i>
+								  </button>
+								  <input type="text" value="0" min="0" size="3" class="qtdeOpcao w-8 text-center bg-transparent" readonly>
+								  <button class="adicionarQtdeOpcao w-8 h-8 flex items-center justify-center">
+								  <i class="fa-solid fa-plus text-gray-400"></i>
+								  </button>
+							   </div>
+							</div>
+						 </div>
+						 <div class="opcoes" data-id="120002" data-categoria="saladas">
+							<div class="desc flex justify-between items-center p-3 border-b border-gray-100 hover:bg-gray-50 transition-colors">
+							   <span class="nome font-semibold text-gray-800">Maionese Batata c/ ovos</span>
+							   <div class="qtdeProdutoOpcao inline-flex items-center rounded-full border border-gray-200 hover:border-primary">
+								  <button class="removerQtdeOpcao w-8 h-8 flex items-center justify-center">
+								  <i class="fa-solid fa-minus text-gray-400"></i>
+								  </button>
+								  <input type="text" value="0" min="0" size="3" class="qtdeOpcao w-8 text-center bg-transparent" readonly>
+								  <button class="adicionarQtdeOpcao w-8 h-8 flex items-center justify-center">
+								  <i class="fa-solid fa-plus text-gray-400"></i>
+								  </button>
+							   </div>
+							</div>
+						 </div>
+						 <div class="opcoes" data-id="120003" data-categoria="saladas">
+							<div class="desc flex justify-between items-center p-3 border-b border-gray-100 hover:bg-gray-50 transition-colors">
+							   <span class="nome font-semibold text-gray-800">Salpicão</span>
+							   <div class="qtdeProdutoOpcao inline-flex items-center rounded-full border border-gray-200 hover:border-primary">
+								  <button class="removerQtdeOpcao w-8 h-8 flex items-center justify-center">
+								  <i class="fa-solid fa-minus text-gray-400"></i>
+								  </button>
+								  <input type="text" value="0" min="0" size="3" class="qtdeOpcao w-8 text-center bg-transparent" readonly>
+								  <button class="adicionarQtdeOpcao w-8 h-8 flex items-center justify-center">
+								  <i class="fa-solid fa-plus text-gray-400"></i>
+								  </button>
+							   </div>
+							</div>
+						 </div>
+						 <div class="opcoes" data-id="120004" data-categoria="saladas">
+							<div class="desc flex justify-between items-center p-3 border-b border-gray-100 hover:bg-gray-50 transition-colors">
+							   <span class="nome font-semibold text-gray-800">Legumes Cozido misto</span>
+							   <div class="qtdeProdutoOpcao inline-flex items-center rounded-full border border-gray-200 hover:border-primary">
+								  <button class="removerQtdeOpcao w-8 h-8 flex items-center justify-center">
+								  <i class="fa-solid fa-minus text-gray-400"></i>
+								  </button>
+								  <input type="text" value="0" min="0" size="3" class="qtdeOpcao w-8 text-center bg-transparent" readonly>
+								  <button class="adicionarQtdeOpcao w-8 h-8 flex items-center justify-center">
+								  <i class="fa-solid fa-plus text-gray-400"></i>
+								  </button>
+							   </div>
+							</div>
+						 </div>
+						 <div class="opcoes" data-id="120005" data-categoria="saladas">
+							<div class="desc flex justify-between items-center p-3 border-b border-gray-100 hover:bg-gray-50 transition-colors">
+							   <span class="nome font-semibold text-gray-800">Alface</span>
+							   <div class="qtdeProdutoOpcao inline-flex items-center rounded-full border border-gray-200 hover:border-primary">
+								  <button class="removerQtdeOpcao w-8 h-8 flex items-center justify-center">
+								  <i class="fa-solid fa-minus text-gray-400"></i>
+								  </button>
+								  <input type="text" value="0" min="0" size="3" class="qtdeOpcao w-8 text-center bg-transparent" readonly>
+								  <button class="adicionarQtdeOpcao w-8 h-8 flex items-center justify-center">
+								  <i class="fa-solid fa-plus text-gray-400"></i>
+								  </button>
+							   </div>
+							</div>
+						 </div>
+						 <div class="opcoes" data-id="120006" data-categoria="saladas">
+							<div class="desc flex justify-between items-center p-3 border-b border-gray-100 hover:bg-gray-50 transition-colors">
+							   <span class="nome font-semibold text-gray-800">Tomate</span>
+							   <div class="qtdeProdutoOpcao inline-flex items-center rounded-full border border-gray-200 hover:border-primary">
+								  <button class="removerQtdeOpcao w-8 h-8 flex items-center justify-center">
+								  <i class="fa-solid fa-minus text-gray-400"></i>
+								  </button>
+								  <input type="text" value="0" min="0" size="3" class="qtdeOpcao w-8 text-center bg-transparent" readonly>
+								  <button class="adicionarQtdeOpcao w-8 h-8 flex items-center justify-center">
+								  <i class="fa-solid fa-plus text-gray-400"></i>
+								  </button>
+							   </div>
+							</div>
+						 </div>
+						 <div class="opcoes" data-id="120007" data-categoria="saladas">
+							<div class="desc flex justify-between items-center p-3 border-b border-gray-100 hover:bg-gray-50 transition-colors">
+							   <span class="nome font-semibold text-gray-800">Salada tropical</span>
+							   <div class="qtdeProdutoOpcao inline-flex items-center rounded-full border border-gray-200 hover:border-primary">
+								  <button class="removerQtdeOpcao w-8 h-8 flex items-center justify-center">
+								  <i class="fa-solid fa-minus text-gray-400"></i>
+								  </button>
+								  <input type="text" value="0" min="0" size="3" class="qtdeOpcao w-8 text-center bg-transparent" readonly>
+								  <button class="adicionarQtdeOpcao w-8 h-8 flex items-center justify-center">
+								  <i class="fa-solid fa-plus text-gray-400"></i>
+								  </button>
+							   </div>
+							</div>
+						 </div>
+						 <div class="opcoes" data-id="120008" data-categoria="saladas">
+							<div class="desc flex justify-between items-center p-3 border-b border-gray-100 hover:bg-gray-50 transition-colors">
+							   <span class="nome font-semibold text-gray-800">Vagem c/ cenoura</span>
+							   <div class="qtdeProdutoOpcao inline-flex items-center rounded-full border border-gray-200 hover:border-primary">
+								  <button class="removerQtdeOpcao w-8 h-8 flex items-center justify-center">
+								  <i class="fa-solid fa-minus text-gray-400"></i>
+								  </button>
+								  <input type="text" value="0" min="0" size="3" class="qtdeOpcao w-8 text-center bg-transparent" readonly>
+								  <button class="adicionarQtdeOpcao w-8 h-8 flex items-center justify-center">
+								  <i class="fa-solid fa-plus text-gray-400"></i>
+								  </button>
+							   </div>
+							</div>
+						 </div>
+						 <div class="opcoes" data-id="120009" data-categoria="saladas">
+							<div class="desc flex justify-between items-center p-3 border-b border-gray-100 hover:bg-gray-50 transition-colors">
+							   <span class="nome font-semibold text-gray-800">Pepino</span>
+							   <div class="qtdeProdutoOpcao inline-flex items-center rounded-full border border-gray-200 hover:border-primary">
+								  <button class="removerQtdeOpcao w-8 h-8 flex items-center justify-center">
+								  <i class="fa-solid fa-minus text-gray-400"></i>
+								  </button>
+								  <input type="text" value="0" min="0" size="3" class="qtdeOpcao w-8 text-center bg-transparent" readonly>
+								  <button class="adicionarQtdeOpcao w-8 h-8 flex items-center justify-center">
+								  <i class="fa-solid fa-plus text-gray-400"></i>
+								  </button>
+							   </div>
+							</div>
+						 </div>
+						 <div class="opcoes" data-id="120010" data-categoria="saladas">
+							<div class="desc flex justify-between items-center p-3 border-b border-gray-100 hover:bg-gray-50 transition-colors">
+							   <span class="nome font-semibold text-gray-800">Brócolis c/ ovos de codorna</span>
+							   <div class="qtdeProdutoOpcao inline-flex items-center rounded-full border border-gray-200 hover:border-primary">
+								  <button class="removerQtdeOpcao w-8 h-8 flex items-center justify-center">
+								  <i class="fa-solid fa-minus text-gray-400"></i>
+								  </button>
+								  <input type="text" value="0" min="0" size="3" class="qtdeOpcao w-8 text-center bg-transparent" readonly>
+								  <button class="adicionarQtdeOpcao w-8 h-8 flex items-center justify-center">
+								  <i class="fa-solid fa-plus text-gray-400"></i>
+								  </button>
+							   </div>
+							</div>
+						 </div>
+						 <div class="opcoes" data-id="120011" data-categoria="saladas">
+							<div class="desc flex justify-between items-center p-3 border-b border-gray-100 hover:bg-gray-50 transition-colors">
+							   <span class="nome font-semibold text-gray-800">Almeirão ao alho</span>
+							   <div class="qtdeProdutoOpcao inline-flex items-center rounded-full border border-gray-200 hover:border-primary">
+								  <button class="removerQtdeOpcao w-8 h-8 flex items-center justify-center">
+								  <i class="fa-solid fa-minus text-gray-400"></i>
+								  </button>
+								  <input type="text" value="0" min="0" size="3" class="qtdeOpcao w-8 text-center bg-transparent" readonly>
+								  <button class="adicionarQtdeOpcao w-8 h-8 flex items-center justify-center">
+								  <i class="fa-solid fa-plus text-gray-400"></i>
+								  </button>
+							   </div>
+							</div>
+						 </div>
+						 <div class="opcoes" data-id="120012" data-categoria="saladas">
+							<div class="desc flex justify-between items-center p-3 border-b border-gray-100 hover:bg-gray-50 transition-colors">
+							   <span class="nome font-semibold text-gray-800">Beterraba ralada</span>
+							   <div class="qtdeProdutoOpcao inline-flex items-center rounded-full border border-gray-200 hover:border-primary">
+								  <button class="removerQtdeOpcao w-8 h-8 flex items-center justify-center">
+								  <i class="fa-solid fa-minus text-gray-400"></i>
+								  </button>
+								  <input type="text" value="0" min="0" size="3" class="qtdeOpcao w-8 text-center bg-transparent" readonly>
+								  <button class="adicionarQtdeOpcao w-8 h-8 flex items-center justify-center">
+								  <i class="fa-solid fa-plus text-gray-400"></i>
+								  </button>
+							   </div>
+							</div>
+						 </div>
+						 <div class="opcoes" data-id="120013" data-categoria="saladas">
+							<div class="desc flex justify-between items-center p-3 border-b border-gray-100 hover:bg-gray-50 transition-colors">
+							   <span class="nome font-semibold text-gray-800">Repolho</span>
+							   <div class="qtdeProdutoOpcao inline-flex items-center rounded-full border border-gray-200 hover:border-primary">
+								  <button class="removerQtdeOpcao w-8 h-8 flex items-center justify-center">
+								  <i class="fa-solid fa-minus text-gray-400"></i>
+								  </button>
+								  <input type="text" value="0" min="0" size="3" class="qtdeOpcao w-8 text-center bg-transparent" readonly>
+								  <button class="adicionarQtdeOpcao w-8 h-8 flex items-center justify-center">
+								  <i class="fa-solid fa-plus text-gray-400"></i>
+								  </button>
+							   </div>
+							</div>
+						 </div>
+						 <div class="opcoes" data-id="120014" data-categoria="saladas">
+							<div class="desc flex justify-between items-center p-3 border-b border-gray-100 hover:bg-gray-50 transition-colors">
+							   <span class="nome font-semibold text-gray-800">Pepino c/ rabanete</span>
+							   <div class="qtdeProdutoOpcao inline-flex items-center rounded-full border border-gray-200 hover:border-primary">
+								  <button class="removerQtdeOpcao w-8 h-8 flex items-center justify-center">
+								  <i class="fa-solid fa-minus text-gray-400"></i>
+								  </button>
+								  <input type="text" value="0" min="0" size="3" class="qtdeOpcao w-8 text-center bg-transparent" readonly>
+								  <button class="adicionarQtdeOpcao w-8 h-8 flex items-center justify-center">
+								  <i class="fa-solid fa-plus text-gray-400"></i>
+								  </button>
+							   </div>
+							</div>
+						 </div>
+						 <div class="opcoes" data-id="120015" data-categoria="saladas">
+							<div class="desc flex justify-between items-center p-3 hover:bg-gray-50 transition-colors">
+							   <span class="nome font-semibold text-gray-800">Salada do Chef</span>
+							   <div class="qtdeProdutoOpcao inline-flex items-center rounded-full border border-gray-200 hover:border-primary">
+								  <button class="removerQtdeOpcao w-8 h-8 flex items-center justify-center">
+								  <i class="fa-solid fa-minus text-gray-400"></i>
+								  </button>
+								  <input type="text" value="0" min="0" size="3" class="qtdeOpcao w-8 text-center bg-transparent" readonly>
+								  <button class="adicionarQtdeOpcao w-8 h-8 flex items-center justify-center">
+								  <i class="fa-solid fa-plus text-gray-400"></i>
+								  </button>
+							   </div>
+							</div>
+						 </div>
+					  </div>
+				   </div>
+				   
+				   <!-- Seção Turbine sua Marmita -->
+				   <div id="secao-turbinados" class="tipo mt-8 p-4 bg-gray-50 rounded-xl" data-id="15316" data-calculo="n" data-minimo="0" data-maximo="1" data-opcional="n">
+					  <div class="topo flex justify-between items-center">
+						 <div>
+							<h3 class="text-lg font-bold text-gray-800">Turbine sua Marmita:</h3>
+							<p class="detalhe text-sm text-gray-600">Escolha até 1 opção</p>
+						 </div>
+						 <div class="col2 flex items-center gap-1 bg-gradient-to-r from-gray-900 to-gray-800 text-white px-3 py-1.5 rounded-full text-sm shadow-lg">
+							<span class="escolhidos font-medium"><span class="contador-turbinados">0</span>/1</span>
+							<i class="fa-solid fa-circle-check text-green-500 animate-pulse"></i>
+						 </div>
+					  </div>
+					  <div class="bg-white rounded-lg mt-4 border border-gray-100">
+						 <div class="opcoes" data-id="121001" data-categoria="turbinados">
+							<div class="desc flex justify-between items-center p-3 border-b border-gray-100 hover:bg-gray-50 transition-colors">
+							   <div class="flex flex-col">
+								  <span class="nome font-semibold text-gray-800">Ovo Frito (1 un)</span>
+								  <span class="text-xs text-green-600">Grátis no 1º pedido</span>
+							   </div>
+							   <div class="qtdeProdutoOpcao inline-flex items-center rounded-full border border-gray-200 hover:border-primary">
+								  <button class="removerQtdeOpcao w-8 h-8 flex items-center justify-center">
+								  <i class="fa-solid fa-minus text-gray-400"></i>
+								  </button>
+								  <input type="text" value="0" min="0" size="3" class="qtdeOpcao w-8 text-center bg-transparent" readonly>
+								  <button class="adicionarQtdeOpcao w-8 h-8 flex items-center justify-center">
+								  <i class="fa-solid fa-plus text-gray-400"></i>
+								  </button>
+							   </div>
+							</div>
+						 </div>
+						 <div class="opcoes" data-id="121002" data-categoria="turbinados">
+							<div class="desc flex justify-between items-center p-3 border-b border-gray-100 hover:bg-gray-50 transition-colors">
+							   <div class="flex flex-col">
+								  <span class="nome font-semibold text-gray-800">Banana à Milanesa (1 un)</span>
+								  <span class="text-xs text-green-600">Grátis no 1º pedido</span>
+							   </div>
+							   <div class="qtdeProdutoOpcao inline-flex items-center rounded-full border border-gray-200 hover:border-primary">
+								  <button class="removerQtdeOpcao w-8 h-8 flex items-center justify-center">
+								  <i class="fa-solid fa-minus text-gray-400"></i>
+								  </button>
+								  <input type="text" value="0" min="0" size="3" class="qtdeOpcao w-8 text-center bg-transparent" readonly>
+								  <button class="adicionarQtdeOpcao w-8 h-8 flex items-center justify-center">
+								  <i class="fa-solid fa-plus text-gray-400"></i>
+								  </button>
+							   </div>
+							</div>
+						 </div>
+						 <div class="opcoes" data-id="121003" data-categoria="turbinados">
+							<div class="desc flex justify-between items-center p-3 border-b border-gray-100 hover:bg-gray-50 transition-colors">
+							   <div class="flex flex-col">
+								  <span class="nome font-semibold text-gray-800">Fricassê Frango (70g)</span>
+								  <span class="text-xs text-green-600">Grátis no 1º pedido</span>
+							   </div>
+							   <div class="qtdeProdutoOpcao inline-flex items-center rounded-full border border-gray-200 hover:border-primary">
+								  <button class="removerQtdeOpcao w-8 h-8 flex items-center justify-center">
+								  <i class="fa-solid fa-minus text-gray-400"></i>
+								  </button>
+								  <input type="text" value="0" min="0" size="3" class="qtdeOpcao w-8 text-center bg-transparent" readonly>
+								  <button class="adicionarQtdeOpcao w-8 h-8 flex items-center justify-center">
+								  <i class="fa-solid fa-plus text-gray-400"></i>
+								  </button>
+							   </div>
+							</div>
+						 </div>
+						 <div class="opcoes" data-id="121004" data-categoria="turbinados">
+							<div class="desc flex justify-between items-center p-3 border-b border-gray-100 hover:bg-gray-50 transition-colors">
+							   <div class="flex flex-col">
+								  <span class="nome font-semibold text-gray-800">Lasanha 4 queijo (70g)</span>
+								  <span class="text-xs text-green-600">Grátis no 1º pedido</span>
+							   </div>
+							   <div class="qtdeProdutoOpcao inline-flex items-center rounded-full border border-gray-200 hover:border-primary">
+								  <button class="removerQtdeOpcao w-8 h-8 flex items-center justify-center">
+								  <i class="fa-solid fa-minus text-gray-400"></i>
+								  </button>
+								  <input type="text" value="0" min="0" size="3" class="qtdeOpcao w-8 text-center bg-transparent" readonly>
+								  <button class="adicionarQtdeOpcao w-8 h-8 flex items-center justify-center">
+								  <i class="fa-solid fa-plus text-gray-400"></i>
+								  </button>
+							   </div>
+							</div>
+						 </div>
+						 <div class="opcoes" data-id="121005" data-categoria="turbinados">
+							<div class="desc flex justify-between items-center p-3 border-b border-gray-100 hover:bg-gray-50 transition-colors">
+							   <div class="flex flex-col">
+								  <span class="nome font-semibold text-gray-800">Extra de Pure</span>
+								  <span class="text-xs text-green-600">Grátis no 1º pedido</span>
+							   </div>
+							   <div class="qtdeProdutoOpcao inline-flex items-center rounded-full border border-gray-200 hover:border-primary">
+								  <button class="removerQtdeOpcao w-8 h-8 flex items-center justify-center">
+								  <i class="fa-solid fa-minus text-gray-400"></i>
+								  </button>
+								  <input type="text" value="0" min="0" size="3" class="qtdeOpcao w-8 text-center bg-transparent" readonly>
+								  <button class="adicionarQtdeOpcao w-8 h-8 flex items-center justify-center">
+								  <i class="fa-solid fa-plus text-gray-400"></i>
+								  </button>
+							   </div>
+							</div>
+						 </div>
+						 <div class="opcoes" data-id="121006" data-categoria="turbinados">
+							<div class="desc flex justify-between items-center p-3 border-b border-gray-100 hover:bg-gray-50 transition-colors">
+							   <div class="flex flex-col">
+								  <span class="nome font-semibold text-gray-800">Coração de galinha (5 un)</span>
+								  <span class="text-xs text-green-600">Grátis no 1º pedido</span>
+							   </div>
+							   <div class="qtdeProdutoOpcao inline-flex items-center rounded-full border border-gray-200 hover:border-primary">
+								  <button class="removerQtdeOpcao w-8 h-8 flex items-center justify-center">
+								  <i class="fa-solid fa-minus text-gray-400"></i>
+								  </button>
+								  <input type="text" value="0" min="0" size="3" class="qtdeOpcao w-8 text-center bg-transparent" readonly>
+								  <button class="adicionarQtdeOpcao w-8 h-8 flex items-center justify-center">
+								  <i class="fa-solid fa-plus text-gray-400"></i>
+								  </button>
+							   </div>
+							</div>
+						 </div>
+						 <div class="opcoes" data-id="121007" data-categoria="turbinados">
+							<div class="desc flex justify-between items-center p-3 hover:bg-gray-50 transition-colors">
+							   <div class="flex flex-col">
+								  <span class="nome font-semibold text-gray-800">Ovo de Codorna (3 un)</span>
+								  <span class="text-xs text-green-600">Grátis no 1º pedido</span>
+							   </div>
+							   <div class="qtdeProdutoOpcao inline-flex items-center rounded-full border border-gray-200 hover:border-primary">
+								  <button class="removerQtdeOpcao w-8 h-8 flex items-center justify-center">
+								  <i class="fa-solid fa-minus text-gray-400"></i>
+								  </button>
+								  <input type="text" value="0" min="0" size="3" class="qtdeOpcao w-8 text-center bg-transparent" readonly>
+								  <button class="adicionarQtdeOpcao w-8 h-8 flex items-center justify-center">
+								  <i class="fa-solid fa-plus text-gray-400"></i>
+								  </button>
+							   </div>
+							</div>
+						 </div>
+					  </div>
+				   </div>
+				</div>
+			 </div>
+		  </div>
+	   </div>
+	</div>
+
+	<!-- Botão de finalizar fixo na parte inferior -->
+	<div class="fixed bottom-0 left-0 right-0 bg-white bg-opacity-95 border-t border-gray-200 shadow-lg z-50 backdrop-blur">
+		<div class="container mx-auto" style="max-width: 1080px!important;">
+		  <div class="flex items-center justify-between py-3">
+			<div class="flex flex-col">
+			  <span class="text-xs text-gray-600">Total do Pedido</span>
+			  <span class="text-2xl font-bold text-green-700" id="precoProduto">R$ 39,90</span>
+			</div>
+			<button 
+			  onclick="finalizarPedido()" 
+			  class="bg-red-600 text-white px-4 py-2 rounded-lg text-md hover:bg-red-700 transition-colors transform hover:shadow-lg">
+			  FINALIZAR PEDIDO
+			</button>
+		  </div>
+		</div>
+	  </div>
+
+	<!-- Scripts -->
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	
+	<!-- 🚀 SISTEMA UNIVERSAL SABOR CASEIRO -->
+	<script>
+	// =======================================================
+	// 🚀 SISTEMA UNIVERSAL DINÂMICO - SABOR CASEIRO
+	// =======================================================
+	
+	(function() {
+		'use strict';
+		
+		console.log('🚀 Iniciando Sistema Universal Sabor Caseiro...');
+		
+		// =======================================================
+		// 📦 EXTRAÇÃO AUTOMÁTICA DE DADOS DO PRODUTO
+		// =======================================================
+		
+		function extrairDadosProduto() {
+			const nome = document.querySelector('.descricao h3')?.textContent?.trim() || 'Produto não identificado';
+			const precoTexto = document.querySelector('.preco')?.textContent?.trim() || 
+							  document.querySelector('#precoProduto')?.textContent?.trim() || 'R$ 0,00';
+			const preco = parseFloat(precoTexto.replace(/[^\d,]/g, '').replace(',', '.')) || 0;
+			const imagem = document.querySelector('.fotoProduto img')?.src || '';
+			const descricao = document.querySelector('.detalhe')?.textContent?.trim() || '';
+			
+			const id = nome.toLowerCase()
+				.normalize('NFD')
+				.replace(/[\u0300-\u036f]/g, '')
+				.replace(/[^a-z0-9]/g, '-')
+				.replace(/-+/g, '-')
+				.replace(/^-|-$/g, '');
+			
+			return {
+				id: id,
+				nome: nome,
+				preco: preco,
+				precoTexto: precoTexto,
+				imagem: imagem,
+				descricao: descricao,
+				quantidade: 1
+			};
+		}
+		
+		// =======================================================
+		// 🏷️ DETECÇÃO AUTOMÁTICA DE CATEGORIAS
+		// =======================================================
+		
+		function detectarCategorias() {
+			const categorias = {};
+			
+			document.querySelectorAll('.tipo').forEach(secao => {
+				const titulo = secao.querySelector('h3')?.textContent?.toLowerCase()?.replace(':', '')?.trim() || '';
+				const maximo = parseInt(secao.dataset.maximo) || 6;
+				
+				let categoria;
+				if (titulo.includes('acompanhamento')) categoria = 'acompanhamentos';
+				else if (titulo.includes('carne')) categoria = 'carnes';
+				else if (titulo.includes('salada')) categoria = 'saladas';
+				else if (titulo.includes('turbine')) categoria = 'turbinados';
+				else categoria = titulo.replace(/\s+/g, '_');
+				
+				categorias[categoria] = {
+					secao: secao,
+					maximo: maximo,
+					opcoes: secao.querySelectorAll('.opcoes')
+				};
+			});
+			
+			return categorias;
+		}
+		
+		// =======================================================
+		// 🔢 SISTEMA DE CONTADORES
+		// =======================================================
+		
+		function atualizarContadores() {
+			const categorias = detectarCategorias();
+			
+			Object.entries(categorias).forEach(([categoria, config]) => {
+				let total = 0;
+				
+				config.opcoes.forEach(opcao => {
+					const qtde = parseInt(opcao.querySelector('.qtdeOpcao')?.value || 0);
+					total += qtde;
+				});
+				
+				const contador = config.secao.querySelector(`.contador-${categoria}`) || 
+								config.secao.querySelector('.escolhidos span');
+				if (contador) {
+					if (contador.textContent.includes('/')) {
+						contador.textContent = contador.textContent.replace(/^\d+/, total.toString());
+					} else {
+						contador.textContent = total.toString();
+					}
+				}
+			});
+		}
+		
+		// =======================================================
+		// 📋 COLETA DE COMPLEMENTOS
+		// =======================================================
+		
+		function coletarComplementos() {
+			const complementos = {};
+			const categorias = detectarCategorias();
+			
+			Object.entries(categorias).forEach(([categoria, config]) => {
+				complementos[categoria] = [];
+				
+				config.opcoes.forEach(opcao => {
+					const qtde = parseInt(opcao.querySelector('.qtdeOpcao')?.value || 0);
+					if (qtde > 0) {
+						const nome = opcao.querySelector('.nome')?.textContent?.trim() || '';
+						const id = opcao.dataset.id || '';
+						
+						complementos[categoria].push({
+							id: id,
+							nome: nome,
+							qtde: qtde
+						});
+					}
+				});
+			});
+			
+			return complementos;
+		}
+		
+		// =======================================================
+		// 🎯 EVENTOS DE CLIQUE
+		// =======================================================
+		
+		function configurarEventos() {
+			document.addEventListener('click', function(event) {
+				const target = event.target.closest('button');
+				if (!target) return;
+				
+				if (target.classList.contains('adicionarQtdeOpcao') || target.querySelector('.fa-plus')) {
+					event.preventDefault();
+					adicionarQuantidade(target);
+				}
+				
+				if (target.classList.contains('removerQtdeOpcao') || target.querySelector('.fa-minus')) {
+					event.preventDefault();
+					removerQuantidade(target);
+				}
+			});
+		}
+		
+		function adicionarQuantidade(button) {
+			const input = button.parentElement.querySelector('.qtdeOpcao');
+			const opcaoDiv = button.closest('.opcoes');
+			const secaoDiv = button.closest('.tipo');
+			
+			if (!input || !secaoDiv) return;
+			
+			const maximo = parseInt(secaoDiv.dataset.maximo) || 6;
+			
+			let totalAtual = 0;
+			secaoDiv.querySelectorAll('.qtdeOpcao').forEach(inp => {
+				totalAtual += parseInt(inp.value || 0);
+			});
+			
+			if (totalAtual < maximo) {
+				const valor = parseInt(input.value || 0);
+				input.value = valor + 1;
+				
+				if (opcaoDiv) {
+					opcaoDiv.classList.add('selected');
+				}
+				
+				atualizarContadores();
+			} else {
+				if (window.Swal) {
+					Swal.fire({
+						icon: 'warning',
+						title: 'Limite atingido!',
+						text: `Você pode escolher no máximo ${maximo} opções nesta categoria.`,
+						timer: 2000,
+						showConfirmButton: false
+					});
+				} else {
+					alert(`Limite atingido! Você pode escolher no máximo ${maximo} opções nesta categoria.`);
+				}
+			}
+		}
+		
+		function removerQuantidade(button) {
+			const input = button.parentElement.querySelector('.qtdeOpcao');
+			const opcaoDiv = button.closest('.opcoes');
+			
+			if (!input) return;
+			
+			const valor = parseInt(input.value || 0);
+			
+			if (valor > 0) {
+				input.value = valor - 1;
+				
+				if (valor - 1 === 0 && opcaoDiv) {
+					opcaoDiv.classList.remove('selected');
+				}
+				
+				atualizarContadores();
+			}
+		}
+		
+		// =======================================================
+		// 💾 FINALIZAÇÃO DO PEDIDO
+		// =======================================================
+		
+		function finalizarPedido() {
+			console.log('🏁 Finalizando pedido...');
+			
+			const produto = extrairDadosProduto();
+			const complementos = coletarComplementos();
+			
+			const pedidoCompleto = {
+				produto: produto,
+				complementos: complementos,
+				timestamp: new Date().toISOString()
+			};
+			
+			try {
+				// Salva no localStorage
+				localStorage.setItem('produtoNome', produto.nome);
+				localStorage.setItem('produtoPreco', produto.precoTexto);
+				localStorage.setItem('produtoImagem', produto.imagem);
+				localStorage.setItem('pedidoCompleto', JSON.stringify(pedidoCompleto));
+				
+				console.log('✅ Dados salvos:', pedidoCompleto);
+				
+			} catch (error) {
+				console.error('❌ Erro ao salvar:', error);
+				window.pedidoDados = JSON.stringify(pedidoCompleto);
+			}
+			
+			// Redireciona para checkout
+			window.location.href = '/checkout/checkout.html';
+		}
+		
+		// =======================================================
+		// 🚀 INICIALIZAÇÃO
+		// =======================================================
+		
+		function inicializar() {
+			if (document.readyState === 'loading') {
+				document.addEventListener('DOMContentLoaded', inicializar);
+				return;
+			}
+			
+			try {
+				configurarEventos();
+				
+				const produto = extrairDadosProduto();
+				console.log('📦 Produto:', produto);
+				
+				const categorias = detectarCategorias();
+				console.log('🏷️ Categorias:', Object.keys(categorias));
+				
+				atualizarContadores();
+				
+				// Substitui função global
+				window.finalizarPedido = finalizarPedido;
+				
+				console.log('✅ Sistema Universal iniciado!');
+				
+			} catch (error) {
+				console.error('❌ Erro na inicialização:', error);
+			}
+		}
+		
+		inicializar();
+		
+	})();
+	</script>
+                </body>
+                </html>

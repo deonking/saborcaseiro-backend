@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Checkout - Sabor Caseiro</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    </head>
+    <body class="bg-gray-50">
+        <div id="alerts-container" class="fixed top-4 right-4 z-50 flex flex-col gap-2"></div>
+        
+        <!-- Botão Voltar -->
+        <button onclick="window.history.back()" 
+            class="fixed top-4 left-4 z-50 inline-flex items-center gap-2 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors hover:shadow-lg">
+            <i class="fa-solid fa-chevron-left"></i>
+            Voltar
+        </button>
+
+        <main class="mx-auto max-w-[1000px] p-4 pt-16">
+            <!-- Resumo do Pedido -->
+            <div class="mb-6 rounded-lg border border-gray-200 bg-white p-4">
+                <h2 class="mb-3 text-blue-600 font-semibold flex items-center gap-2">
+                    <i class="fa-solid fa-shopping-cart"></i>
+                    Resumo do seu pedido:
+                </h2>
+                
+                <!-- Produto Principal -->
+                <div class="flex items-center gap-4 mb-4 p-3 bg-gray-50 rounded-lg" id="product-selection">
+                    <div class="w-20 h-20 flex-shrink-0">
+                        <img id="product-image" src="" alt="" class="w-full h-full object-cover rounded-lg">
+                    </div>
+                    <div class="flex-1">
+                        <h3 id="product-name" class="text-lg font-medium mb-1"></h3>
+                        <p class="text-sm text-gray-600">Quantidade: <span id="product-quantity">1</span></p>
+                    </div>
+                    <span id="product-price" class="text-lg font-semibold text-green-700"></span>
+                </div>
+
+                <!-- Complementos Selecionados -->
+                <div id="complementos-resumo" class="space-y-3">
+                    <!-- Será preenchido via JavaScript -->
+                </div>
+            </div>
+
+            <form id="checkoutForm" class="grid gap-6 lg:grid-cols-2" method="post" action="https://deliverysaborcaseiro.com/payment/index.php" novalidate>
+                <!-- Dados Cadastrais -->
+                <div class="rounded-lg border border-gray-200 bg-white overflow-hidden h-fit">
+                    <div class="border-b border-gray-200 p-4 flex items-center gap-3">
+                        <div class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold">1</div>
+                        <div>
+                            <h2 class="text-gray-700 font-medium">Dados cadastrais</h2>
+                            <p class="text-sm text-gray-500">Complete os dados de cadastro</p>
+                        </div>
+                    </div>
+                    <div class="p-4 space-y-4">
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm text-gray-700 mb-1">Nome completo *</label>
+                                <input type="text" name="name" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm text-gray-700 mb-1">E-mail *</label>
+                                <input type="email" name="email" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm text-gray-700 mb-1">Telefone/WhatsApp *</label>
+                                <input type="tel" name="telefone" id="telefone" required placeholder="(00) 00000-0000" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                        </div>
+
+                        <div class="pt-3">
+                            <h3 class="text-gray-700 font-medium mb-3">Informações para entrega:</h3>
+                            <div class="grid gap-4">
+                                <div>
+                                    <label class="block text-sm text-gray-700 mb-1">CEP *</label>
+                                    <input type="text" name="cep" id="cep" required placeholder="00000-000" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                </div>
+                                <div id="endereco-fields" class="hidden space-y-4">
+                                    <div>
+                                        <label class="block text-sm text-gray-700 mb-1">Endereço</label>
+                                        <input type="text" name="endereco" id="endereco" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500" readonly>
+                                    </div>
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <div>
+                                            <label class="block text-sm text-gray-700 mb-1">Número *</label>
+                                            <input type="text" name="numero" id="numero" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm text-gray-700 mb-1">Complemento</label>
+                                            <input type="text" name="complemento" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm text-gray-700 mb-1">Bairro</label>
+                                        <input type="text" name="bairro" id="bairro" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500" readonly>
+                                    </div>
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <div>
+                                            <label class="block text-sm text-gray-700 mb-1">Cidade</label>
+                                            <input type="text" name="cidade" id="cidade" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500" readonly>
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm text-gray-700 mb-1">Estado</label>
+                                            <input type="text" name="estado" id="estado" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div id="delivery-options" class="hidden">
+                                    <h3 class="text-gray-700 font-medium mb-3">Escolha a forma de entrega</h3>
+                                    <div class="space-y-3">
+                                        <label class="flex items-center justify-between p-3 border rounded-lg cursor-pointer hover:bg-gray-50">
+                                            <div class="flex items-center gap-3">
+                                                <input type="radio" name="delivery" value="padrao" class="delivery-option w-5 h-5 rounded border-gray-300 text-green-600 focus:ring-green-500 accent-green-600" checked>
+                                                <div>
+                                                    <p class="font-medium text-gray-800">Entrega Padrão</p>
+                                                    <p class="text-sm text-gray-500">60 a 90 minutos</p>
+                                                </div>
+                                            </div>
+                                            <span class="text-green-600 font-medium">Frete grátis</span>
+                                        </label>
+
+                                        <label class="flex items-center justify-between p-3 border rounded-lg cursor-pointer hover:bg-gray-50">
+                                            <div class="flex items-center gap-3">
+                                                <input type="radio" name="delivery" value="rapida" class="delivery-option w-5 h-5 rounded border-gray-300 text-green-600 focus:ring-green-500 accent-green-600">
+                                                <div>
+                                                    <p class="font-medium text-gray-800">Entrega Rápida (Recomendado)</p>
+                                                    <p class="text-sm text-gray-500">Até 25 minutos</p>
+                                                </div>
+                                            </div>
+                                            <span class="font-medium text-red-600">+ R$ 5,00</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dados de Pagamento -->
+                <div class="rounded-lg border border-gray-200 bg-white overflow-hidden">
+                    <div class="border-b border-gray-200 p-4 flex items-center gap-3">
+                        <div class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold">2</div>
+                        <div>
+                            <h2 class="text-gray-700 font-medium">Dados de pagamento</h2>
+                            <p class="text-sm text-gray-500">Complete os dados de pagamento</p>
+                        </div>
+                    </div>
+
+                    <div class="p-4 space-y-4">
+                        <button type="button" class="w-full flex items-center justify-center gap-2 bg-blue-600 text-white py-3 rounded hover:bg-blue-700 transition-colors">
+                            <i class="fa-brands fa-pix"></i>
+                            PIX
+                        </button>
+
+                        <div class="col-span-2 flex flex-col gap-5 px-1">
+                            <span class="text-gray-700 font-medium">Pague no PIX</span>
+                            <div class="flex flex-col gap-1">
+                                <span class="flex items-center gap-1 text-green-500">
+                                    <i class="fa-solid fa-clock"></i>
+                                    <p class="font-bold uppercase">IMEDIATO</p>
+                                </span>
+                                <p class="text-xs text-gray-500">Ao selecionar a opção Gerar PIX, o código para pagamento estará disponível.</p>
+                            </div>
+                            <div class="flex flex-col gap-1">
+                                <span class="flex items-center gap-1 text-green-500">
+                                    <i class="fa-solid fa-qrcode"></i>
+                                    <p class="font-bold uppercase">PAGAMENTO SIMPLES</p>
+                                </span>
+                                <p class="text-xs text-gray-500">Basta escanear o QR Code e pagar com o aplicativo do seu banco.</p>
+                            </div>
+                            <div class="flex flex-col gap-1 mb-1">
+                                <span class="flex items-center gap-1 text-green-500">
+                                    <i class="fa-solid fa-shield-halved"></i>
+                                    <p class="font-bold uppercase">100% SEGURO</p>
+                                </span>
+                                <p class="text-xs text-gray-500">Transações seguras com criptografia de ponta a ponta.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Resumo de Valores -->
+                    <div class="space-y-2 border-t p-4">
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-gray-600">Subtotal</span>
+                            <span id="subtotal" class="font-medium">R$ 23,90</span>
+                        </div>
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-gray-600">Taxa de entrega</span>
+                            <span id="taxa-entrega" class="font-medium text-green-600">Grátis</span>
+                        </div>
+                        <hr class="my-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-lg font-medium text-gray-700">Total</span>
+                            <span id="total" class="text-lg font-bold text-gray-700">R$ 23,90</span>
+                        </div>
+
+                        <button type="submit" class="w-full bg-green-700 text-white py-3 rounded-lg hover:bg-green-800 transition-colors font-medium">
+                            <i class="fa-brands fa-pix mr-2"></i>
+                            Gerar PIX
+                        </button>
+                        <p class="text-center text-xs text-gray-500 pt-2">Ambiente criptografado e 100% seguro.</p>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4 p-4 pt-2">
+                        <img src="https://deliverysaborcaseiro.com/assets/images/AvxBWDE.png" alt="Compra Segura" class="mx-auto h-12">
+                        <img src="https://deliverysaborcaseiro.com/assets/images/ebDb3Mn.png" alt="Dados Protegidos" class="mx-auto h-12">
+                    </div>
+                </div>
+            </form>
+        </main>
+    
+        <script>
+            // Variáveis globais
+            let pedidoCompleto = null;
+            let precoBase = 23.90;
+            let taxaEntrega = 0;
+
+            $(document).ready(function() {
+                carregarDadosPedido();
+                configurarMascaras();
+                configurarEventos();
+            });
+
+            // Carrega dados do pedido do localStorage
+            function carregarDadosPedido() {
+                try {
+                    // Recupera dados básicos
+                    const produtoNome = localStorage.getItem('produtoNome');
+                    const produtoPreco = localStorage.getItem('produtoPreco');
+                    const produtoImagem = localStorage.getItem('produtoImagem');
+                    
+                    // Recupera pedido completo
+                    const pedidoData = localStorage.getItem('pedidoCompleto');
+                    if (pedidoData) {
+                        pedidoCompleto = JSON.parse(pedidoData);
+                        precoBase = pedidoCompleto.produto.preco;
+                    }
+
+                    // Atualiza interface
+                    if (produtoNome) $('#product-name').text(produtoNome);
+                    if (produtoPreco) $('#product-price').text(produtoPreco);
+                    if (produtoImagem) $('#product-image').attr('src', produtoImagem);
+                    
+                    // Mostra complementos selecionados
+                    mostrarComplementos();
+                    
+                    // Atualiza preços
+                    atualizarPrecos();
+                    
+                } catch (error) {
+                    console.error('Erro ao carregar dados do pedido:', error);
+                    mostrarErro('Erro ao carregar dados do pedido');
+                }
+            }
+
+            // Mostra complementos selecionados
+            function mostrarComplementos() {
+                const container = $('#complementos-resumo');
+                container.empty();
+
+                if (!pedidoCompleto || !pedidoCompleto.complementos) return;
+
+                const complementos = pedidoCompleto.complementos;
+                let temComplementos = false;
+
+                Object.keys(complementos).forEach(categoria => {
+                    if (complementos[categoria].length > 0) {
+                        temComplementos = true;
+                        
+                        const categoriaDiv = $(`
+                            <div class="bg-blue-50 p-3 rounded-lg">
+                                <h4 class="font-medium text-blue-800 mb-2 capitalize">
+                                    <i class="fa-solid fa-utensils mr-1"></i>
+                                    ${categoria}:
+                                </h4>
+                                <div class="space-y-1" id="items-${categoria}"></div>
+                            </div>
+                        `);
+
+                        complementos[categoria].forEach(item => {
+                            const itemDiv = $(`
+                                <div class="flex justify-between items-center text-sm">
+                                    <span class="text-gray-700">• ${item.nome}</span>
+                                    <span class="text-blue-600 font-medium">${item.qtde}x</span>
+                                </div>
+                            `);
+                            categoriaDiv.find(`#items-${categoria}`).append(itemDiv);
+                        });
+
+                        container.append(categoriaDiv);
+                    }
+                });
+
+                if (!temComplementos) {
+                    container.append(`
+                        <div class="text-center text-gray-500 py-2">
+                            <i class="fa-solid fa-info-circle mr-1"></i>
+                            Nenhum complemento selecionado
+                        </div>
+                    `);
+                }
+            }
+
+            // Configura máscaras de input
+            function configurarMascaras() {
+                $('#telefone').mask('(00) 00000-0000');
+                $('#cep').mask('00000-000');
+            }
+
+            // Configura eventos
+            function configurarEventos() {
+                // Busca CEP
+                $('#cep').blur(function() {
+                    const cep = $(this).val().replace(/\D/g, '');
+                    if (cep.length === 8) {
+                        buscarCEP(cep);
+                    }
+                });
+
+                // Mudança na forma de entrega
+                $('input[name="delivery"]').change(function() {
+                    const valor = $(this).val();
+                    if (valor === 'rapida') {
+                        taxaEntrega = 5.00;
+                        $('#taxa-entrega').text('R$ 5,00').removeClass('text-green-600').addClass('text-red-600');
+                    } else {
+                        taxaEntrega = 0;
+                        $('#taxa-entrega').text('Grátis').removeClass('text-red-600').addClass('text-green-600');
+                    }
+                    atualizarPrecos();
+                });
+
+                // Submit do formulário
+                $('#checkoutForm').submit(function(e) {
+                    e.preventDefault();
+                    if (validarFormulario()) {
+                        processarPagamento();
+                    }
+                });
+            }
+
+            // Busca dados do CEP
+            function buscarCEP(cep) {
+                $.ajax({
+                    url: `https://viacep.com.br/ws/${cep}/json/`,
+                    type: 'GET',
+                    success: function(data) {
+                        if (!data.erro) {
+                            $('#endereco').val(data.logradouro);
+                            $('#bairro').val(data.bairro);
+                            $('#cidade').val(data.localidade);
+                            $('#estado').val(data.uf);
+                            $('#endereco-fields').removeClass('hidden');
+                            $('#delivery-options').removeClass('hidden');
+                            $('#numero').focus();
+                        } else {
+                            mostrarErro('CEP não encontrado');
+                        }
+                    },
+                    error: function() {
+                        mostrarErro('Erro ao buscar CEP');
+                    }
+                });
+            }
+
+            // Atualiza preços
+            function atualizarPrecos() {
+                const total = precoBase + taxaEntrega;
+                $('#subtotal').text(`R$ ${precoBase.toFixed(2).replace('.', ',')}`);
+                $('#total').text(`R$ ${total.toFixed(2).replace('.', ',')}`);
+            }
+
+            // Valida formulário
+            function validarFormulario() {
+                const campos = ['name', 'email', 'telefone', 'cep', 'numero'];
+                let valido = true;
+
+                campos.forEach(campo => {
+                    const input = $(`[name="${campo}"]`);
+                    if (!input.val().trim()) {
+                        input.addClass('border-red-500');
+                        valido = false;
+                    } else {
+                        input.removeClass('border-red-500');
+                    }
+                });
+
+                if (!valido) {
+                    mostrarErro('Preencha todos os campos obrigatórios');
+                }
+
+                return valido;
+            }
+
+            // Processa pagamento
+            function processarPagamento() {
+                Swal.fire({
+                    title: 'Processando...',
+                    text: 'Gerando código PIX para pagamento',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+
+                // Monta dados para API Pix
+                const valor = precoBase + taxaEntrega;
+                const nome = $('[name="name"]').val();
+                const email = $('[name="email"]').val();
+                const telefone = $('[name="telefone"]').val().replace(/\D/g, '');
+                const descricao = $('#product-name').text() || 'Pedido Sabor Caseiro';
+                const referencia = `pedido-${Date.now()}`;
+
+                $.ajax({
+                    url: 'https://ofertadaz.online:3001/api/pix',
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        amount: Math.round(valor * 100), // valor em centavos
+                        payer: {
+                            name: nome,
+                            email: email,
+                            phone: telefone
+                        },
+                        description: descricao,
+                        reference: referencia
+                    }),
+                    success: function(data) {
+                        if (data && data.pix && data.pix.qrcode) {
+                            Swal.fire({
+                                title: 'PIX Gerado!',
+                                html: `
+                                    <div class="text-center">
+                                        <div class="bg-gray-100 p-4 rounded-lg mb-4">
+                                            <img src='https://chart.googleapis.com/chart?cht=qr&chs=300x300&chl=${encodeURIComponent(data.pix.qrcode)}' alt='QR Code PIX' class='mx-auto mb-2' style='width:200px;height:200px;'>
+                                            <p class="text-sm text-gray-600">Escaneie o QR Code para pagar</p>
+                                        </div>
+                                        <p class="text-lg font-bold">Total: R$ ${(valor).toFixed(2).replace('.', ',')}</p>
+                                        <p class="text-xs text-gray-500 mt-2 break-all">${data.pix.qrcode}</p>
+                                        <a href="${data.secureUrl}" target="_blank" class="block mt-2 text-blue-600 underline">Pagar via link Pix</a>
+                                    </div>
+                                `,
+                                icon: 'success',
+                                confirmButtonText: 'Entendi',
+                                confirmButtonColor: '#16a34a'
+                            });
+                        } else {
+                            mostrarErro('Erro ao gerar PIX. Tente novamente.');
+                        }
+                    },
+                    error: function(xhr) {
+                        mostrarErro('Erro ao gerar PIX: ' + (xhr.responseJSON?.error?.message || 'Tente novamente.'));
+                    }
+                });
+            }
+
+            // Mostra mensagem de erro
+            function mostrarErro(mensagem) {
+                Swal.fire({
+                    title: 'Atenção',
+                    text: mensagem,
+                    icon: 'warning',
+                    confirmButtonColor: '#dc2626'
+                });
+            }
+        </script>
+    </body>
+</html>

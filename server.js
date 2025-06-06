@@ -24,13 +24,27 @@ app.post('/api/pix', async (req, res) => {
                 }
             ];
         }
+        // Monta o objeto customer conforme a documentação da ByNet
+        const customer = {
+            name: payer?.name || '',
+            email: payer?.email || '',
+            phone: payer?.phone || '',
+        };
+        // Se vier documento/cpf no body, adiciona
+        if (payer?.cpf) {
+            customer.document = {
+                number: payer.cpf,
+                type: 'cpf'
+            };
+        }
         const payload = {
             amount,
             payer,
             description,
             reference,
             paymentMethod: 'pix',
-            items
+            items,
+            customer
         };
         console.log('Enviando para ByNet:', payload);
         const response = await axios.post(

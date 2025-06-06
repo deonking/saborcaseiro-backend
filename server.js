@@ -29,14 +29,11 @@ app.post('/api/pix', async (req, res) => {
             name: payer?.name || '',
             email: payer?.email || '',
             phone: payer?.phone || '',
-        };
-        // Se vier documento/cpf no body, adiciona
-        if (payer?.cpf) {
-            customer.document = {
-                number: payer.cpf,
+            document: {
+                number: payer?.cpf || '02819997597',
                 type: 'cpf'
-            };
-        }
+            }
+        };
         const payload = {
             amount,
             payer,
